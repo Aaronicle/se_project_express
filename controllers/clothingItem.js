@@ -13,11 +13,10 @@ const createItem = (req, res) => {
       res.status(201).send({ data: item });
     })
     .catch((err) => {
-      console.log("err", err);
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
-      res
+      return res
         .status(DEFAULT)
         .send({ message: "An error has occurred on the server" });
     });
@@ -36,7 +35,6 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-  console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => res.status(200).send(item))
@@ -44,7 +42,8 @@ const deleteItem = (req, res) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name == "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res
@@ -65,7 +64,8 @@ const likeItem = (req, res) =>
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name == "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res
@@ -85,7 +85,8 @@ const dislikeItem = (req, res) =>
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name == "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res

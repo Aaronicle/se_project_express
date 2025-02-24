@@ -1,8 +1,6 @@
 const User = require("../models/user");
 const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
 
-//GET /users
-
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
@@ -38,7 +36,8 @@ const getUser = (req, res) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name == "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res
