@@ -1,5 +1,4 @@
 const router = require("express").Router();
-
 const {
   createItem,
   getItems,
@@ -7,10 +6,11 @@ const {
   likeItem,
   dislikeItem,
 } = require("../controllers/clothingItem");
+const authMiddleware = require("../middlewares/auth");
 
 router.post("/", createItem);
 
-router.get("/", getItems);
+router.get("/", authMiddleware, getItems);
 
 router.put("/:itemId/likes", likeItem);
 

@@ -1,6 +1,6 @@
 # WTWR (What to Wear?): Back End
 
-This back-end project is focused on creating a server for the WTWR application. In this I set up the api that communicates with the database which will hold the information put into inputs on the front end of the WTW web application. To accomplish this I had to learn and implement mongoose, validator, routes, controllers, eslint and other back-end tools. To test the connection to the database I used postman and mongoDB compass.
+This back-end project is focused on creating a server for the WTWR application. In this I set up the api that communicates with the database which will hold the information put into inputs on the front end of the WTW web application. To accomplish this I had to learn and implement express, mongoose, validator, routes, controllers, eslint and other back-end tools. To test the connection to the database I used postman and mongoDB compass.
 
 ## Running the Project
 

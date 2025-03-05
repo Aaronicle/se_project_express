@@ -1,9 +1,13 @@
 const ClothingItem = require("../models/clothingItem");
-const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
+
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  DEFAULT,
+  FORBIDDEN,
+} = require("../utils/errors");
 
 const createItem = (req, res) => {
-  // console.log(req);
-  // console.log(req.body);
   const owner = req.user._id;
 
   const { name, weather, imageUrl } = req.body;
@@ -35,6 +39,19 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
+  ClothingItem.findById(ItemId).then((v) => {
+    if (v.owner !== req.user._id) {
+      res.status(FORBIDDEN).send({ message: "Not your item" });
+    } else {
+      ClothingItem.deleteOne(v)
+        .then((item) => res.send(item))
+        .catch(() => {
+          return res
+            .status(DEFAULT)
+            .send({ message: "An error has occurred on the server" });
+        });
+    }
+  });
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => res.status(200).send(item))
