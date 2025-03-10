@@ -8,13 +8,13 @@ const {
 } = require("../controllers/clothingItem");
 const authMiddleware = require("../middlewares/auth");
 
-router.post("/", createItem);
+router.post("/", authMiddleware, createItem);
 
-router.get("/", authMiddleware, getItems);
+router.get("/", getItems);
 
-router.put("/:itemId/likes", likeItem);
+router.put("/:itemId/likes", authMiddleware, likeItem);
 
-router.delete("/:itemId", deleteItem);
-router.delete("/:itemId/likes", dislikeItem);
+router.delete("/:itemId", authMiddleware, deleteItem);
+router.delete("/:itemId/likes", authMiddleware, dislikeItem);
 
 module.exports = router;

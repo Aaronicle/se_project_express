@@ -1,13 +1,11 @@
-const { UNATHORIZED, BAD_REQUEST } = require("../utils/errors");
 const jwt = require("jsonwebtoken");
+const { UNATHORIZED } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
 const authMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
-  console.log("req.headers", req.headers);
-  console.log("authorization", authorization);
   if (!authorization || !authorization.startsWith("Bearer")) {
-    res.status(BAD_REQUEST).send({ message: "Authotization required" });
+    res.status(UNATHORIZED).send({ message: "Authorization required" });
   }
   const token = authorization.replace("Bearer ", "");
   let payload;

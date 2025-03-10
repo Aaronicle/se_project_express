@@ -39,22 +39,21 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-  ClothingItem.findById(ItemId).then((v) => {
-    if (v.owner !== req.user._id) {
-      res.status(FORBIDDEN).send({ message: "Not your item" });
-    } else {
-      ClothingItem.deleteOne(v)
-        .then((item) => res.send(item))
-        .catch(() => {
-          return res
-            .status(DEFAULT)
-            .send({ message: "An error has occurred on the server" });
-        });
-    }
-  });
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((v) => {
+      if (String(v.owner) !== req.user._id) {
+        res.status(FORBIDDEN).send({ message: "Not your item" });
+      } else {
+        ClothingItem.deleteOne(v)
+          .then((item) => res.send(item))
+          .catch(() =>
+            res
+              .status(DEFAULT)
+              .send({ message: "An error has occurred on the server" })
+          );
+      }
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
