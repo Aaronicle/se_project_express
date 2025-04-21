@@ -1,16 +1,20 @@
 const router = require("express").Router();
 const { login, createUser } = require("../controllers/users");
-const { NOT_FOUND } = require("../utils/errors");
+const { NotFoundError } = require("../utils/errors");
 const clothingItem = require("./clothingItem");
 const userRouter = require("./users");
+const {
+  validateUserBody,
+  validateAuthentication,
+} = require("../middlewares/validation");
 
 router.use("/users", userRouter);
 router.use("/items", clothingItem);
-router.post("/signin", login);
-router.post("/signup", createUser);
+router.post("/signin", validateAuthentication, login);
+router.post("/signup", validateUserBody, createUser);
 
-router.use((req, res) => {
-  res.status(NOT_FOUND).send({ message: "Router not found" });
+router.use(() => {
+  throw new NotFoundError("Router not found");
 });
 
 module.exports = router;

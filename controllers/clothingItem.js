@@ -40,15 +40,13 @@ const deleteItem = (req, res, next) => {
     .orFail()
     .then((item) => {
       if (String(item.owner) !== req.user._id) {
-        next(
+        return next(
           new ForbiddenError("You don't have permission to delete this item")
         );
-      } else {
-        return ClothingItem.deleteOne(item);
       }
-    })
-    .then((item) => {
-      res.send(item);
+      return ClothingItem.deleteOne(item).then((deletedItem) => {
+        res.send(deletedItem);
+      });
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
